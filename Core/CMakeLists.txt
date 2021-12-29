@@ -10,6 +10,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 
 target_link_libraries(${PROJECT_NAME}
         pico_stdlib
+        pico_unique_id
         tinyusb_device
         tinyusb_board
         )

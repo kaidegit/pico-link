@@ -5,6 +5,8 @@
 #ifndef PICO_TEMPLATE_MAIN_H
 #define PICO_TEMPLATE_MAIN_H
 
-#define LED_PIN PICO_DEFAULT_LED_PIN
+#include "io_config.h"
+#include "stdio.h"
+#include "stdint.h"
 
 #endif //PICO_TEMPLATE_MAIN_H

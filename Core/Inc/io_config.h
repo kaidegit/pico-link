@@ -1,0 +1,19 @@
+//
+// Created by yekai on 2021/12/29.
+//
+
+#ifndef PICO_LINK_IO_CONFIG_H
+#define PICO_LINK_IO_CONFIG_H
+
+#define LED_PIN PICO_DEFAULT_LED_PIN
+
+#define PICO_LINK_SWCLK 27
+#define PICO_LINK_SWDIO 26
+#define PICO_LINK_RESET 17
+
+#define PICO_LINK_UART_TX 20
+#define PICO_LINK_UART_RX 21
+#define PICO_LINK_UART_ID uart1
+#define PICO_LINK_UART_IRQ UART1_IRQ
+
+#endif //PICO_LINK_IO_CONFIG_H

@@ -4,10 +4,12 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+#include <get_serial.h>
 #include "main.h"
 #include "pico/stdlib.h"
 #include "bsp/board.h"
 #include "usb_descriptors.h"
+#include "virtual_UART.h"
 
 /* Blink pattern
  * - 250 ms  : device not mounted
@@ -26,11 +28,15 @@ void led_blinking_task(void);
 
 void hid_task(void);
 
+void cdc_task();
+
 int main() {
-    board_init();
-    tusb_init();
     gpio_init(LED_PIN);
     gpio_set_dir(LED_PIN, GPIO_OUT);
+
+    usb_serial_init(); //读取芯片序列号作为USB序列号
+    tusb_init();
+
     while (true) {
         tud_task();
         hid_task();
