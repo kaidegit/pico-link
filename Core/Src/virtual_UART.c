@@ -16,16 +16,11 @@ void tud_cdc_rx_cb(uint8_t itf) {
 
 // MCU->LINK回调
 void on_uart_rx(){
-    char buf[CFG_TUD_CDC_RX_BUFSIZE] = {0};
-    uint8_t len = 0;
     while (uart_is_readable(PICO_LINK_UART_ID)) {
         uint8_t ch = uart_getc(PICO_LINK_UART_ID);
         tud_cdc_write_char(ch);
-//        buf[len] = ch;
-//        len++;
     }
     tud_cdc_write_flush();
-//    VCOM_SendString(buf);
 }
 
 void VCOM_Init() {
@@ -34,7 +29,6 @@ void VCOM_Init() {
     uart_init(PICO_LINK_UART_ID, uart_config.bit_rate);
     gpio_set_function(PICO_LINK_UART_RX, GPIO_FUNC_UART);
     gpio_set_function(PICO_LINK_UART_TX, GPIO_FUNC_UART);
-    uart_set_fifo_enabled(PICO_LINK_UART_ID, false);
     irq_set_exclusive_handler(PICO_LINK_UART_IRQ, on_uart_rx);
     irq_set_enabled(PICO_LINK_UART_IRQ, true);
     uart_set_irq_enables(PICO_LINK_UART_ID, true, false);
@@ -46,9 +40,7 @@ void VCOM_SendString(char *str) {
     }
     tud_cdc_write_flush();
 }
-
-
-
+// 检测到上位机串口助手开启串口回调
 void tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts) {
     VCOM_Init();
 //    VCOM_SendString("connected!\r\n");
