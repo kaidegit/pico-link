@@ -75,10 +75,7 @@ uint8_t const *tud_descriptor_device_cb(void) {
 //--------------------------------------------------------------------+
 
 uint8_t const desc_hid_report[] = {
-        TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(REPORT_ID_KEYBOARD)),
-        TUD_HID_REPORT_DESC_MOUSE   (HID_REPORT_ID(REPORT_ID_MOUSE)),
-        TUD_HID_REPORT_DESC_CONSUMER(HID_REPORT_ID(REPORT_ID_CONSUMER_CONTROL)),
-        TUD_HID_REPORT_DESC_GAMEPAD (HID_REPORT_ID(REPORT_ID_GAMEPAD))
+        TUD_HID_REPORT_DESC_GENERIC_INOUT(CFG_TUD_HID_EP_BUFSIZE)
 };
 
 // Invoked when received GET HID REPORT DESCRIPTOR
@@ -207,9 +204,8 @@ uint8_t const *tud_descriptor_configuration_cb(uint8_t index) {
 char const *string_desc_arr[] = {
         (const char[]) {0x09, 0x04}, // 0: is supported language is English (0x0409)
         "ARM",                     // 1: Manufacturer
-        "DAPLink CMSIS-DAP",              // 2: Product
+        "Pico-Link CMSIS-DAP",              // 2: Product
         usb_serial,                      // 3: Serials, should use chip ID
-        "CDC Test Name",
 };
 
 static uint16_t _desc_str[32];

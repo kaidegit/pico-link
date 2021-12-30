@@ -13,6 +13,7 @@ target_link_libraries(${PROJECT_NAME}
         pico_unique_id
         tinyusb_device
         tinyusb_board
+        cmsis_core
         )
 
 #add_link_options(-Wl,-gc-sections,--print-memory-usage,-Map=${PROJECT_BINARY_DIR}/${PROJECT_NAME}.map)

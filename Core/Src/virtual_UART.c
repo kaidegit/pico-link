@@ -15,7 +15,7 @@ void tud_cdc_rx_cb(uint8_t itf) {
 }
 
 // MCU->LINK回调
-void on_uart_rx(){
+void on_uart_rx() {
     while (uart_is_readable(PICO_LINK_UART_ID)) {
         uint8_t ch = uart_getc(PICO_LINK_UART_ID);
         tud_cdc_write_char(ch);
@@ -38,8 +38,11 @@ void VCOM_SendString(char *str) {
     while (*str) {
         tud_cdc_write_char(*str++);
     }
+    tud_cdc_write_char('\r');
+    tud_cdc_write_char('\n');
     tud_cdc_write_flush();
 }
+
 // 检测到上位机串口助手开启串口回调
 void tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts) {
     VCOM_Init();
