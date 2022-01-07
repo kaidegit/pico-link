@@ -44,11 +44,7 @@ __STATIC_INLINE uint8_t DAP_GetProductString (char *str) {
 \return String length.
 */
 __STATIC_INLINE uint8_t DAP_GetSerNumString (char *str) {
-    const char unique_id[49] = "1234567890"
-                               "1234567890"
-                               "1234567890"
-                               "1234567890"
-                               "12345678";
+    const char unique_id[49] = "2333333333";
     const char * data = unique_id;
     uint8_t length = (uint8_t)strlen(data) + 1;
     memcpy(str, data, length);

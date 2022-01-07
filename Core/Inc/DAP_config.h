@@ -210,7 +210,6 @@ __STATIC_INLINE void PORT_OFF(void) {
 */
 __STATIC_FORCEINLINE uint32_t PIN_SWCLK_TCK_IN(void) {
     return (gpio_get_all() & PICO_LINK_SWCLK_MASK) != 0;
-//    return gpio_get(PICO_LINK_SWDIO_IN);
 }
 
 /** SWCLK/TCK I/O pin: Set Output to High.
@@ -218,7 +217,6 @@ Set the SWCLK/TCK DAP hardware I/O pin to high level.
 */
 __STATIC_FORCEINLINE void PIN_SWCLK_TCK_SET(void) {
     gpio_set_mask(PICO_LINK_SWCLK_MASK);
-//    gpio_put(PICO_LINK_SWCLK, 1);
 }
 
 /** SWCLK/TCK I/O pin: Set Output to Low.
@@ -226,7 +224,6 @@ Set the SWCLK/TCK DAP hardware I/O pin to low level.
 */
 __STATIC_FORCEINLINE void PIN_SWCLK_TCK_CLR(void) {
     gpio_clr_mask(PICO_LINK_SWCLK_MASK);
-//    gpio_put(PICO_LINK_SWCLK, 0);
 }
 
 // SWDIO/TMS Pin I/O --------------------------------------
@@ -236,7 +233,6 @@ __STATIC_FORCEINLINE void PIN_SWCLK_TCK_CLR(void) {
 */
 __STATIC_FORCEINLINE uint32_t PIN_SWDIO_TMS_IN(void) {
     return (gpio_get_all() & PICO_LINK_SWDIO_IN_MASK) != 0;
-//    return gpio_get(PICO_LINK_SWDIO_IN);
 }
 
 /** SWDIO/TMS I/O pin: Set Output to High.
@@ -244,7 +240,6 @@ Set the SWDIO/TMS DAP hardware I/O pin to high level.
 */
 __STATIC_FORCEINLINE void PIN_SWDIO_TMS_SET(void) {
     gpio_set_mask(PICO_LINK_SWDIO_OUT_MASK);
-//    gpio_put(PICO_LINK_SWDIO_OUT, 1);
 }
 
 /** SWDIO/TMS I/O pin: Set Output to Low.
@@ -252,7 +247,6 @@ Set the SWDIO/TMS DAP hardware I/O pin to low level.
 */
 __STATIC_FORCEINLINE void PIN_SWDIO_TMS_CLR(void) {
     gpio_clr_mask(PICO_LINK_SWDIO_OUT_MASK);
-//    gpio_put(PICO_LINK_SWDIO_OUT, 0);
 }
 
 /** SWDIO I/O pin: Get Input (used in SWD mode only).
@@ -260,7 +254,6 @@ __STATIC_FORCEINLINE void PIN_SWDIO_TMS_CLR(void) {
 */
 __STATIC_FORCEINLINE uint32_t PIN_SWDIO_IN(void) {
     return (gpio_get_all() & PICO_LINK_SWDIO_IN_MASK) != 0;
-//    return gpio_get(PICO_LINK_SWDIO_IN);
 }
 
 /** SWDIO I/O pin: Set Output (used in SWD mode only).

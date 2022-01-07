@@ -1657,85 +1657,67 @@ uint32_t DAP_ProcessCommand(const uint8_t *request, uint8_t *response) {
     switch (*request++) {
 
         case ID_DAP_Info:
-            VCOM_SendString("ID_DAP_Info");
             num = DAP_Info(*request, response + 1);
             *response = (uint8_t) num;
             return ((2U << 16) + 2U + num);
 
         case ID_DAP_HostStatus:
-            VCOM_SendString("ID_DAP_HostStatus");
             num = DAP_HostStatus(request, response);
             break;
 
         case ID_DAP_Connect:
-            VCOM_SendString("ID_DAP_Connect");
             num = DAP_Connect(request, response);
             break;
         case ID_DAP_Disconnect:
-            VCOM_SendString("ID_DAP_Disconnect");
             num = DAP_Disconnect(response);
             break;
 
         case ID_DAP_Delay:
-            VCOM_SendString("ID_DAP_Delay");
             num = DAP_Delay(request, response);
             break;
 
         case ID_DAP_ResetTarget:
-            VCOM_SendString("ID_DAP_ResetTarget");
             num = DAP_ResetTarget(response);
             break;
 
         case ID_DAP_SWJ_Pins:
-            VCOM_SendString("ID_DAP_SWJ_Pins");
             num = DAP_SWJ_Pins(request, response);
             break;
         case ID_DAP_SWJ_Clock:
-            VCOM_SendString("ID_DAP_SWJ_Clock");
             num = DAP_SWJ_Clock(request, response);
             break;
         case ID_DAP_SWJ_Sequence:
-            VCOM_SendString("ID_DAP_SWJ_Sequence");
             num = DAP_SWJ_Sequence(request, response);
             break;
 
         case ID_DAP_SWD_Configure:
-            VCOM_SendString("ID_DAP_SWD_Configure");
             num = DAP_SWD_Configure(request, response);
             break;
         case ID_DAP_SWD_Sequence:
-            VCOM_SendString("ID_DAP_SWD_Sequence");
             num = DAP_SWD_Sequence(request, response);
             break;
 
         case ID_DAP_JTAG_Sequence:
-            VCOM_SendString("ID_DAP_JTAG_Sequence");
             num = DAP_JTAG_Sequence(request, response);
             break;
         case ID_DAP_JTAG_Configure:
-            VCOM_SendString("ID_DAP_JTAG_Configure");
             num = DAP_JTAG_Configure(request, response);
             break;
         case ID_DAP_JTAG_IDCODE:
-            VCOM_SendString("ID_DAP_JTAG_IDCODE");
             num = DAP_JTAG_IDCode(request, response);
             break;
 
         case ID_DAP_TransferConfigure:
-            VCOM_SendString("ID_DAP_TransferConfigure");
             num = DAP_TransferConfigure(request, response);
             break;
         case ID_DAP_Transfer:
-            VCOM_SendString("ID_DAP_Transfer");
             num = DAP_Transfer(request, response);
             break;
         case ID_DAP_TransferBlock:
-            VCOM_SendString("ID_DAP_TransferBlock");
             num = DAP_TransferBlock(request, response);
             break;
 
         case ID_DAP_WriteABORT:
-            VCOM_SendString("ID_DAP_WriteABORT");
             num = DAP_WriteAbort(request, response);
             break;
 
@@ -1764,7 +1746,6 @@ uint32_t DAP_ProcessCommand(const uint8_t *request, uint8_t *response) {
 #endif
 
         default:
-            VCOM_SendString("default");
             *(response - 1) = ID_DAP_Invalid;
             return ((1U << 16) | 1U);
     }
