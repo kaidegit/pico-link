@@ -37,7 +37,7 @@
 #define USB_PID           (0x4000 | _PID_MAP(CDC, 0) | _PID_MAP(MSC, 1) | _PID_MAP(HID, 2) | \
                            _PID_MAP(MIDI, 3) | _PID_MAP(VENDOR, 4) )
 
-#define USB_VID   0xCafe
+#define USB_VID   0x2E8A
 #define USB_BCD   0x0200
 
 //--------------------------------------------------------------------+
@@ -203,7 +203,7 @@ uint8_t const *tud_descriptor_configuration_cb(uint8_t index) {
 // array of pointer to string descriptors
 char const *string_desc_arr[] = {
         (const char[]) {0x09, 0x04}, // 0: is supported language is English (0x0409)
-        "ARM",                     // 1: Manufacturer
+        "Raspberry",                     // 1: Manufacturer
         "Pico-Link CMSIS-DAP",              // 2: Product
         usb_serial,                      // 3: Serials, should use chip ID
 };
