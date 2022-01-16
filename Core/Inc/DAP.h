@@ -310,7 +310,7 @@ __STATIC_FORCEINLINE void PIN_DELAY_SLOW(uint32_t delay) {
 //            "bne  0b\n"
 //    : "+l"(delay) : : "cc"
 //    );
-    uint32_t count = delay;
+    uint32_t count = delay / 2;
     while (--count){
         __NOP();
     }

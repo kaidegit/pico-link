@@ -12,7 +12,6 @@
 #include "bsp/board.h"
 #include "usb_descriptors.h"
 #include "virtual_UART.h"
-#include "DAP_queue.h"
 
 /* Blink pattern
  * - 250 ms  : device not mounted

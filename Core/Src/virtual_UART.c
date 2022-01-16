@@ -46,5 +46,4 @@ void VCOM_SendString(char *str) {
 // 检测到上位机串口助手开启串口回调
 void tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts) {
     VCOM_Init();
-//    VCOM_SendString("connected!\r\n");
 }
