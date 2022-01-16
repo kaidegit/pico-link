@@ -127,6 +127,7 @@ __STATIC_INLINE void pin_in_init(uint gpio, uint8_t mode) {
     gpio_init(gpio);
     gpio_set_dir(gpio, GPIO_IN);
 }
+
 //**************************************************************************************************
 /**
 \defgroup DAP_Config_PortIO_gr CMSIS-DAP Hardware I/O Pin Access
@@ -186,9 +187,8 @@ __STATIC_INLINE void PORT_SWD_SETUP(void) {
     pin_out_init(PICO_LINK_SWCLK);
     gpio_put(PICO_LINK_SWCLK, 1);
     // Set SWDIO HIGH
-    pin_out_init(PICO_LINK_SWDIO_OUT);
-    gpio_put(PICO_LINK_SWDIO_OUT, 1);
-    pin_in_init(PICO_LINK_SWDIO_IN, 1);
+    pin_out_init(PICO_LINK_SWDIO);
+    gpio_put(PICO_LINK_SWDIO, 1);
     // Set RESET HIGH
     pin_out_od_init(PICO_LINK_RESET);//TODO - fix reset logic
 }
@@ -198,7 +198,7 @@ Disables the DAP Hardware I/O pins which configures:
  - TCK/SWCLK, TMS/SWDIO, TDI, TDO, nTRST, nRESET to High-Z mode.
 */
 __STATIC_INLINE void PORT_OFF(void) {
-    pin_in_init(PICO_LINK_SWDIO_OUT, 0);
+    pin_in_init(PICO_LINK_SWDIO, 0);
     pin_in_init(PICO_LINK_SWCLK, 0);
     pin_in_init(PICO_LINK_RESET, 0);
 }
@@ -228,32 +228,49 @@ __STATIC_FORCEINLINE void PIN_SWCLK_TCK_CLR(void) {
 
 // SWDIO/TMS Pin I/O --------------------------------------
 
+/**
+ * reinit swdio pin to in/out mode
+ * @param gpio gpio pin
+ * @param mode 0 is in, 1 is out
+ */
+static inline void PIN_SWDIO_TMS_Reinit(uint8_t mode) {
+    if (mode) {
+        // set swdio pin to output
+        gpio_set_pulls(PICO_LINK_SWDIO, false, false);
+        gpio_set_dir_out_masked(PICO_LINK_SWDIO_MASK);
+    } else {
+        // set swdio pin to input
+        gpio_set_pulls(PICO_LINK_SWDIO, true, false);
+        gpio_set_dir_in_masked(PICO_LINK_SWDIO_MASK);
+    }
+}
+
 /** SWDIO/TMS I/O pin: Get Input.
 \return Current status of the SWDIO/TMS DAP hardware I/O pin.
 */
 __STATIC_FORCEINLINE uint32_t PIN_SWDIO_TMS_IN(void) {
-    return (gpio_get_all() & PICO_LINK_SWDIO_IN_MASK) != 0;
+    return (gpio_get_all() & PICO_LINK_SWDIO_MASK) != 0;
 }
 
 /** SWDIO/TMS I/O pin: Set Output to High.
 Set the SWDIO/TMS DAP hardware I/O pin to high level.
 */
 __STATIC_FORCEINLINE void PIN_SWDIO_TMS_SET(void) {
-    gpio_set_mask(PICO_LINK_SWDIO_OUT_MASK);
+    gpio_set_mask(PICO_LINK_SWDIO_MASK);
 }
 
 /** SWDIO/TMS I/O pin: Set Output to Low.
 Set the SWDIO/TMS DAP hardware I/O pin to low level.
 */
 __STATIC_FORCEINLINE void PIN_SWDIO_TMS_CLR(void) {
-    gpio_clr_mask(PICO_LINK_SWDIO_OUT_MASK);
+    gpio_clr_mask(PICO_LINK_SWDIO_MASK);
 }
 
 /** SWDIO I/O pin: Get Input (used in SWD mode only).
 \return Current status of the SWDIO DAP hardware I/O pin.
 */
 __STATIC_FORCEINLINE uint32_t PIN_SWDIO_IN(void) {
-    return (gpio_get_all() & PICO_LINK_SWDIO_IN_MASK) != 0;
+    return (gpio_get_all() & PICO_LINK_SWDIO_MASK) != 0;
 }
 
 /** SWDIO I/O pin: Set Output (used in SWD mode only).
@@ -261,9 +278,9 @@ __STATIC_FORCEINLINE uint32_t PIN_SWDIO_IN(void) {
 */
 __STATIC_FORCEINLINE void PIN_SWDIO_OUT(uint32_t bit) {
     if (bit & 1) {
-        gpio_set_mask(PICO_LINK_SWDIO_OUT_MASK);
+        gpio_set_mask(PICO_LINK_SWDIO_MASK);
     } else {
-        gpio_clr_mask(PICO_LINK_SWDIO_OUT_MASK);
+        gpio_clr_mask(PICO_LINK_SWDIO_MASK);
     }
 }
 
@@ -272,8 +289,8 @@ Configure the SWDIO DAP hardware I/O pin to output mode. This function is
 called prior \ref PIN_SWDIO_OUT function calls.
 */
 __STATIC_FORCEINLINE void PIN_SWDIO_OUT_ENABLE(void) {
-    pin_out_init(PICO_LINK_SWDIO_OUT);
-    gpio_clr_mask(PICO_LINK_SWDIO_OUT_MASK);
+    PIN_SWDIO_TMS_Reinit(1);
+    gpio_clr_mask(PICO_LINK_SWDIO_MASK);
 }
 
 /** SWDIO I/O pin: Switch to Input mode (used in SWD mode only).
@@ -281,8 +298,7 @@ Configure the SWDIO DAP hardware I/O pin to input mode. This function is
 called prior \ref PIN_SWDIO_IN function calls.
 */
 __STATIC_FORCEINLINE void PIN_SWDIO_OUT_DISABLE(void) {
-    pin_in_init(PICO_LINK_SWDIO_OUT, 0);
-    gpio_set_mask(PICO_LINK_SWDIO_OUT_MASK);
+    PIN_SWDIO_TMS_Reinit(0);
 }
 
 
@@ -443,15 +459,10 @@ __STATIC_INLINE void DAP_SETUP(void) {
     pin_out_init(PICO_LINK_SWCLK);
     gpio_put(PICO_LINK_SWCLK, 1);
 
-    pin_out_init(PICO_LINK_SWDIO_OUT);
-    gpio_put(PICO_LINK_SWDIO_OUT, 1);
-
-    pin_in_init(PICO_LINK_SWDIO_IN, 1);
+    pin_out_init(PICO_LINK_SWDIO);
+    gpio_put(PICO_LINK_SWDIO, 1);
 
     pin_in_init(PICO_LINK_RESET, 1);
-
-//    pin_out_init(CONNECTED_LED_PORT, CONNECTED_LED_PIN_Bit);
-//    CONNECTED_LED_PORT->BSRR = CONNECTED_LED_PIN;
 }
 
 /** Reset Target Device with custom specific I/O pin or command sequence.
