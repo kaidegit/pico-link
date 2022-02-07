@@ -107,10 +107,7 @@ __STATIC_INLINE void pin_out_init(uint gpio) {
 }
 
 __STATIC_INLINE void pin_out_od_init(uint gpio) {
-    // TODO:Pico似乎没有开漏输出
-    gpio_pull_up(gpio);
-    gpio_init(gpio);
-    gpio_set_dir(gpio, GPIO_IN);
+    // not available
 }
 /**
  * init gpio to input and with pull mode
@@ -190,7 +187,7 @@ __STATIC_INLINE void PORT_SWD_SETUP(void) {
     pin_out_init(PICO_LINK_SWDIO);
     gpio_put(PICO_LINK_SWDIO, 1);
     // Set RESET HIGH
-    pin_out_od_init(PICO_LINK_RESET);//TODO - fix reset logic
+    pin_in_init(PICO_LINK_RESET, 0);
 }
 
 /** Disable JTAG/SWD I/O Pins.
@@ -324,9 +321,7 @@ __STATIC_FORCEINLINE void PIN_TDI_OUT(uint32_t bit) {
 /** TDO I/O pin: Get Input.
 \return Current status of the TDO DAP hardware I/O pin.
 */
-__STATIC_FORCEINLINE uint32_t
-
-PIN_TDO_IN(void) {
+__STATIC_FORCEINLINE uint32_t PIN_TDO_IN(void) {
     return (0);   // Not available
 }
 
@@ -336,9 +331,7 @@ PIN_TDO_IN(void) {
 /** nTRST I/O pin: Get Input.
 \return Current status of the nTRST DAP hardware I/O pin.
 */
-__STATIC_FORCEINLINE uint32_t
-
-PIN_nTRST_IN(void) {
+__STATIC_FORCEINLINE uint32_t PIN_nTRST_IN(void) {
     return (0);   // Not available
 }
 
@@ -358,7 +351,7 @@ __STATIC_FORCEINLINE void PIN_nTRST_OUT(uint32_t bit) {
 */
 __STATIC_FORCEINLINE uint32_t PIN_nRESET_IN(void) {
     pin_in_init(PICO_LINK_RESET, 1);
-    return gpio_get(PICO_LINK_RESET);
+    return (gpio_get_all() & PICO_LINK_RESET_MASK) != 0;
 }
 
 /** nRESET I/O pin: Set Output.
@@ -473,6 +466,7 @@ when a device needs a time-critical unlock sequence that enables the debug port.
         1 = a device specific reset sequence is implemented.
 */
 __STATIC_INLINE uint32_t RESET_TARGET(void) {
+
     return (0);              // change to '1' when a device reset sequence is implemented
 }
 
