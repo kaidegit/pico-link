@@ -113,7 +113,6 @@ uint8_t const desc_configuration[] = {
                 TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP,
                 100
         ),
-
         // Interface number, string index, protocol, report descriptor len, EP In address, size & polling interval
         TUD_HID_INOUT_DESCRIPTOR(
                 ITF_NUM_HID,
@@ -123,9 +122,9 @@ uint8_t const desc_configuration[] = {
                 EPNUM_HID,
                 0x80 | EPNUM_HID,
                 CFG_TUD_HID_EP_BUFSIZE,
-                10
+                1
         ),
-
+        // Interface number, string index, EP notification address and size, EP data address (out, in) and size.
         TUD_CDC_DESCRIPTOR(
                 ITF_NUM_CDC_COM,
                 0,

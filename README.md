@@ -130,7 +130,7 @@ uint8_t const desc_configuration[] = {
                 EPNUM_HID,
                 0x80 | EPNUM_HID,
                 CFG_TUD_HID_EP_BUFSIZE,
-                10
+                1
         ),
 
         TUD_CDC_DESCRIPTOR(
