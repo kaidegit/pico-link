@@ -99,6 +99,7 @@ void tud_hid_set_report_cb(
 //--------------------------------------------------------------------+
 // BLINKING TASK
 //--------------------------------------------------------------------+
+
 void led_blinking_task(void) {
     static uint32_t start_ms = 0;
     static bool led_state = false;
@@ -110,7 +111,7 @@ void led_blinking_task(void) {
     if (board_millis() - start_ms < blink_interval_ms) return; // not enough time
     start_ms += blink_interval_ms;
 
-    board_led_write(led_state);
-    led_state = 1 - led_state; // toggle
+    gpio_put(LED_PIN, led_state ? LED_STATE_ON : LED_STATE_OFF);
+    led_state = !led_state; // toggle
 }
 

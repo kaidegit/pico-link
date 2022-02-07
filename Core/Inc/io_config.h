@@ -5,7 +5,9 @@
 #ifndef PICO_LINK_IO_CONFIG_H
 #define PICO_LINK_IO_CONFIG_H
 
-#define LED_PIN PICO_DEFAULT_LED_PIN
+#define LED_PIN 4
+#define LED_STATE_ON true
+#define LED_STATE_OFF false
 
 #define PICO_LINK_SWCLK 27
 #define PICO_LINK_SWDIO 26
