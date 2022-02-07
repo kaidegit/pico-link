@@ -91,7 +91,7 @@ void tud_hid_set_report_cb(
     static uint8_t TxDataBuffer[CFG_TUD_HID_EP_BUFSIZE];
     uint32_t response_size = TU_MIN(CFG_TUD_HID_EP_BUFSIZE, bufsize);
 
-    DAP_ProcessCommand(RxDataBuffer, TxDataBuffer);
+    DAP_ExecuteCommand(RxDataBuffer, TxDataBuffer);
 
     tud_hid_report(0, TxDataBuffer, response_size);
 }

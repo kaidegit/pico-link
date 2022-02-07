@@ -98,7 +98,7 @@ enum {
 
 #define  CONFIG_TOTAL_LEN  (TUD_CONFIG_DESC_LEN + TUD_HID_INOUT_DESC_LEN + TUD_CDC_DESC_LEN)
 
-#define EPNUM_HID       0x81
+#define EPNUM_HID       0x01
 #define EPNUM_CDC_NOTIF 0x83
 #define EPNUM_CDC_OUT   0x02
 #define EPNUM_CDC_IN    0x82
@@ -120,10 +120,10 @@ uint8_t const desc_configuration[] = {
                 0,
                 HID_ITF_PROTOCOL_NONE,
                 sizeof(desc_hid_report),
-                0x01,
                 EPNUM_HID,
+                0x80 | EPNUM_HID,
                 CFG_TUD_HID_EP_BUFSIZE,
-                5
+                10
         ),
 
         TUD_CDC_DESCRIPTOR(
