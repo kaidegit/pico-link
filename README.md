@@ -4,7 +4,7 @@
 
 我选择的是任务四：制作一个调试器
 
-树莓派团队提供了一个PicoProbe项目用于调试，同时提供了他们修改过的OpenOCD。由于PicoProbe的兼容性有限，仅支持他们修改过的OpenOCD，对于Keil、pyOCD以及OpenOCD原项目等的支持不佳，我这边选择了移植DAPLink，原仓库地址[ARMmbed/DAPLink (github.com)](https://github.com/ARMmbed/DAPLink)。当然也可以使用[CMSIS_5/CMSIS/DAP/Firmware at develop · ARM-software/CMSIS_5 (github.com)](https://github.com/ARM-software/CMSIS_5/tree/develop/CMSIS/DAP/Firmware)这个仓库的源码，这个似乎更为简单。两个都是ARM提供的固件，ARMmbed的似乎实现了一个环形池和WEBUSB等好多内容，虽然我本次移植并没使用。
+树莓派团队提供了一个PicoProbe项目用于调试，同时提供了他们修改过的OpenOCD。由于PicoProbe的兼容性有限，仅支持他们修改过的OpenOCD，对于Keil、pyOCD以及OpenOCD原项目等的支持不佳，我这边选择了移植DAPLink，原仓库地址[ARMmbed/DAPLink (github.com)](https://github.com/ARMmbed/DAPLink)。当然也可以使用[CMSIS_5/CMSIS/DAP/Firmware at develop · ARM-software/CMSIS_5 (github.com)](https://github.com/ARM-software/CMSIS_5/tree/develop/CMSIS/DAP/Firmware)这个仓库的源码，这个似乎更为简单。两个都是ARM提供的固件，ARMmbed的似乎实现了一个环形池和WEBUSB等好多内容，虽然我本次移植并没使用，CMSIS库中的例程更为简洁易懂。
 
 ARM团队去年1月还在PicoProbe项目的[issue](https://github.com/raspberrypi/picoprobe/issues/2)中提到了要使DAPLink支持RP2040，似乎暂时还咕咕咕着。
 
@@ -181,6 +181,10 @@ void tud_hid_set_report_cb(
 
 接着整个项目就差不多了。
 
+项目占用如图，-Og编译，可以看到对于这颗iot方向的mcu，资源占用率就十分的低。
+
+![prj_size](imgs/prj_size.png)
+
 ##  实现结果
 
 使用GameKit作为调试器，连接STM32G071板
@@ -202,4 +206,14 @@ OpenOCD下载：
 pyOCD下载：
 
 ![test_pyocd](imgs/test_pyocd.jpg)
+
+MDK调试：
+
+![test_mdk_debug](imgs/test_mdk_debug.png)
+
+## 心得体会
+
+DAPLink的移植并没有我们想象中的那么难，核心内容均被包装好，配置宏和接口，调用入口即可使用。主要还是USB协议栈的学习使用。
+
+RP2040作为树莓派出的第一颗单片机，堆料方面诚意很足，也有着PIO之类有特色的外设，但整体设计风格与ST之类的传统单片机大厂略有不同，完全基于XiP外置Flash的存储方案可能对于固件加密方面有着不小的问题。
 
