@@ -1,8 +1,22 @@
-# 一个树莓派Pico(RP2040)的简单工程
+# 使用树莓派Pico制作的DAPLink调试器
 
-为CLion制作的一个示例
+使用树莓派Pico（RP2040）实现的DAPLink
 
-OpenOCD使用树莓派提供的[仓库](https://github.com/raspberrypi/openocd/tree/rp2040)编译，参考[Pico + CLion - Raspberry Pi Forums](https://forums.raspberrypi.com/viewtopic.php?p=1882107&hilit=CLion&sid=339b91bdb46be8b03471c92b5f412e6d#p1882107)添加了patch以适用于CLion的OpenOCD插件，测试可使用JLink下载和调试。
+## IO配置
+
+具体可查看Core/inc/io_config.h
+
+SWDIO_IN通过100R与SWDIO_OUT相连
+
+| IO标识 | IO编号 |
+| ------ | ------ |
+| SWCLK  | GPIO19 |
+| SWDIO  | GPIO18 |
+| RESET  | GPIO17 |
+| TX     | 20     |
+| RX     | 21     |
+
+
 
 
 
