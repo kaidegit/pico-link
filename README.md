@@ -157,7 +157,17 @@ DAP主要处理下发的命令，SW_DP和JTAG_DP主要将命令发送出去，DA
 
 修改DAP_config.h里面的一些函数和宏定义，基本就是把接口适配一下。接口适配时更推荐使用接近底层的寄存器或是直接能就地解析的inline函数写法来提升效率。本次移植中有几个适配RP2040的点：RESET原本设计为开漏输出，由于RP2040似乎没有开漏输出，在这里需稍加修改。DAP原本的原理图将SWDIO的输入和输出分为了两个IO，用100R进行了相连。为了适配GameKit，将其并为了一个IO。
 
-代码较多，在此不贴出来了。
+代码较多，在此贴一个例子。
+
+```c++
+__STATIC_FORCEINLINE void PIN_SWDIO_OUT(uint32_t bit) {
+    if (bit & 1) {
+        gpio_set_mask(PICO_LINK_SWDIO_MASK);
+    } else {
+        gpio_clr_mask(PICO_LINK_SWDIO_MASK);
+    }
+}
+```
 
 ### USB任务接口配置
 
@@ -180,6 +190,10 @@ void tud_hid_set_report_cb(
 ```
 
 接着整个项目就差不多了。
+
+主要的流程图如图
+
+![flow](imgs/flow_chart.png)
 
 项目占用如图，-Og编译，可以看到对于这颗iot方向的mcu，资源占用率就十分的低。
 
